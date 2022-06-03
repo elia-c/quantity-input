@@ -1,7 +1,7 @@
-import { Component, EventEmitter, forwardRef, Input, OnDestroy, Output } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Component, EventEmitter, forwardRef, Input, OnDestroy, Output} from '@angular/core';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'quantity-input',
@@ -22,17 +22,32 @@ export class QuantityInputComponent implements ControlValueAccessor, OnDestroy {
   @Input() color: string;
 
   limit = 10000000;
+  minLimit = 0;
+
   @Input('limit')
   private set limitValue(v: string) {
-    if (!v) { return; }
+    if (!v) {
+      return;
+    }
+    this.limit = parseInt(v);
+  }
+
+  @Input('minLimit')
+  private set minLimitValue(v: string) {
+    if (!v) {
+      return;
+    }
     this.limit = parseInt(v);
   }
 
   // Allow the input to be disabled, and when it is make it somewhat transparent.
   disabled = false;
+
   @Input('disabled')
   private set disabledValue(v: boolean) {
-    if (!v) { return; }
+    if (!v) {
+      return;
+    }
     this.quantityCtrl.disable();
     this.disabled = v;
   }
@@ -47,7 +62,9 @@ export class QuantityInputComponent implements ControlValueAccessor, OnDestroy {
   }
 
   // Function to call when the input is touched (when a star is clicked).
-  onTouched = () => { };
+  onTouched = () => {
+  };
+
   get value(): number {
     return this.quantityCtrl.value;
   }
@@ -58,13 +75,11 @@ export class QuantityInputComponent implements ControlValueAccessor, OnDestroy {
         takeUntil(this._unsubscribeAll)
       )
       .subscribe((val) => {
-        if (this.quantityCtrl.value < 1) {
-          this.writeValue(1);
-        }
-        else if (this.quantityCtrl.value > this.limit) {
+        if (this.quantityCtrl.value < this.minLimit) {
+          this.writeValue(this.minLimit);
+        } else if (this.quantityCtrl.value > this.limit) {
           this.writeValue(this.limit);
-        }
-        else {
+        } else {
           this.writeValue(this.quantityCtrl.value);
         }
       });
@@ -85,7 +100,7 @@ export class QuantityInputComponent implements ControlValueAccessor, OnDestroy {
   // Allows Angular to update the model (quantity).
   // Update the model and changes needed for the view here.
   writeValue(quantity: number): void {
-    this.quantityCtrl.setValue(quantity, { emitEvent: false });
+    this.quantityCtrl.setValue(quantity, {emitEvent: false});
     this.onChange(this.value);
   }
 
@@ -106,8 +121,7 @@ export class QuantityInputComponent implements ControlValueAccessor, OnDestroy {
     this.disabled = isDisabled;
     if (isDisabled) {
       this.quantityCtrl.disable();
-    }
-    else {
+    } else {
       this.quantityCtrl.enable();
     }
   }

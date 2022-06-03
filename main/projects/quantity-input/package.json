@@ -37,6 +37,11 @@
     "rxjs": "~6.5.5"
   },
   "dependencies": {
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0",
+    "@angular/forms": "^14.0.0",
+    "@angular/material": "^14.0.0",
+    "rxjs": "^7.5.5",
     "tslib": "^2.0.0"
   }
 }
