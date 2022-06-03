@@ -1,7 +1,7 @@
 {
-  "name": "@nghacks/quantity-input",
-  "version": "1.0.1",
-  "description": "Quantity input for shopping cart",
+  "name": "@elia_c/quantity-input",
+  "version": "1.0.2",
+  "description": "Quantity input with add and rm buttons",
   "keywords": [
     "angular",
     "material",
